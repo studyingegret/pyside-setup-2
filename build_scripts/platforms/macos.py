@@ -169,7 +169,7 @@ def prepare_standalone_package_macos(pyside_build, _vars, is_android=False):
                 dir_filter_function=general_dir_filter,
                 file_filter_function=file_variant_filter,
                 _vars=_vars)
-        if not is_pypy:
+        if not is_pypy and not OPTION["NO_DESIGNER"]:
             copydir("{install_dir}/plugins/designer",
                     plugins_target / "designer",
                     _filter=filters,

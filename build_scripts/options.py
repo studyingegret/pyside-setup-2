@@ -267,6 +267,10 @@ class CommandMixin:
         # enabled, the extra include path of /app/include will be added to the option
         # --shiboken-extra-include-paths.
         ('flatpak', None, 'Build PySide6 for Flatpak.'),
+
+        # My patch to try to make installing work
+        # Because I only installed qtbase (6.9.0) and don't have designer.exe
+        ('no-designer', None, '[Patch] Do not copy designer directory')
     ]
 
     def __init__(self):
@@ -353,6 +357,8 @@ class CommandMixin:
 
         # qtpaths is already known before running SetupRunner
         self.qtpaths = OPTION["QTPATHS"]
+
+        self.no_designer = False
 
     @staticmethod
     @memoize
@@ -543,6 +549,7 @@ class CommandMixin:
             sys.exit(-1)
 
         OPTION['PLAT_NAME'] = self.plat_name
+        OPTION['NO_DESIGNER'] = self.no_designer
 
     def _extra_checks(self):
         if self.is_cross_compile and not self.plat_name:

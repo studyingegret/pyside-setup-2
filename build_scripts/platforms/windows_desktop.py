@@ -391,7 +391,9 @@ def copy_qt_artifacts(pyside_build, destination_qt_dir, copy_pdbs, _vars):
         copydir("{qt_plugins_dir}", plugins_target,
                 file_filter_function=plugin_dll_filter,
                 _vars=_vars)
-        if not is_pypy:
+        #print(f"{OPTION=}")
+        #print(f"{_vars=}")
+        if not is_pypy and not OPTION['NO_DESIGNER']:
             copydir("{install_dir}/plugins/designer",
                     f"{plugins_target}/designer",
                     _filter=["*.dll"],
