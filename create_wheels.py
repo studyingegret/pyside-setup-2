@@ -11,6 +11,7 @@ from argparse import ArgumentParser, Namespace
 from dataclasses import dataclass
 from pathlib import Path
 from shutil import copy, rmtree, copytree
+import traceback
 
 import build  # type: ignore
 import pyproject_hooks
@@ -323,7 +324,8 @@ def copy_examples_for_wheel(package_path: Path):
     try:
         copytree("examples", package_path / "PySide6" / "examples", dirs_exist_ok=True)
     except OSError as e:
-        print("Error trying to copy the examples directory:", e, file=sys.stderr)
+        print("Error trying to copy the examples directory:", file=sys.stderr)
+        traceback.print_exc(file=sys.stderr)
         sys.exit(-1)
 
 
