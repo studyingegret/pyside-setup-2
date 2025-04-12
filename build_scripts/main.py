@@ -10,6 +10,7 @@ import sys
 import subprocess
 import sysconfig
 import time
+import traceback
 from packaging.version import parse as parse_version
 from pathlib import Path
 from shutil import copytree, rmtree
@@ -962,7 +963,8 @@ class PysideBuild(_build, CommandMixin, BuildInfoCollectorMixin):
             else:
                 return prepare_packages_posix(self, _vars, self.is_cross_compile)
         except IOError as e:
-            print('setup.py/prepare_packages: ', e)
+            print('setup.py/prepare_packages:')
+            traceback.print_exc(file=sys.stderr)
             raise
 
     def qt_is_framework_build(self):
