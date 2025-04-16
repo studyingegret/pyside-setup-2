@@ -5,6 +5,16 @@ from __future__ import annotations
 import os
 import sys
 
+# This change will allow testing PySide6 with only qtbase.
+# (??)
+try:
+    from PySide6 import QtQml
+except ImportError as e:
+    print(f"Skipping adding libpysideqml to library dirs: {e}")
+    has_qml = False
+else:
+    has_qml = True
+
 SRC_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(os.path.join(os.path.dirname(os.path.dirname(SRC_DIR)),
                              'shiboken6', 'tests'))
@@ -51,8 +61,9 @@ def _init_test_paths(shiboken_tests=False, testbindings_module=False):
 
     pyside_build_dir = os.path.join(get_build_dir(), 'pyside6')
     python_dirs.append(pyside_build_dir)   # for PySide6
-    lib_dirs = [os.path.join(pyside_build_dir, 'libpyside'),
-                os.path.join(pyside_build_dir, 'libpysideqml')]
+    lib_dirs = [os.path.join(pyside_build_dir, 'libpyside')]
+    if has_qml:
+        os.path.join(pyside_build_dir, 'libpysideqml')
 
     if testbindings_module:
         python_dirs.append(os.path.join(pyside_build_dir,
